@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Category {
+public class ProductCategory {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -18,6 +18,6 @@ public class Category {
     private String icon;
 
     @ManyToOne
-    private Category parentCategory;
+    private ProductCategory parentCategory;
 
 }

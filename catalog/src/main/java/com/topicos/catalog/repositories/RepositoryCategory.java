@@ -3,19 +3,19 @@ package com.topicos.catalog.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.topicos.catalog.models.Category;
+import com.topicos.catalog.models.ProductCategory;
 import java.util.List;
 
 
-public interface RepositoryCategory extends JpaRepository<Category,Long>{
-    Category findByNameIgnoreCase(String name);
+public interface RepositoryCategory extends JpaRepository<ProductCategory,Long>{
+    ProductCategory findByNameIgnoreCase(String name);
 
-    List<Category> findByDescriptionContainingIgnoreCase(String description);
+    List<ProductCategory> findByDescriptionContainingIgnoreCase(String description);
 
-    List<Category> findByParentCategoryIsNull();
+    List<ProductCategory> findByParentCategoryIsNull();
 
-    List<Category> findByParentCategory(Category parentCategory);
+    List<ProductCategory> findByParentCategory(ProductCategory parentCategory);
 
-    List<Category> findByParentCategory_Id(Long id);
+    List<ProductCategory> findByParentCategory_Id(Long id);
 
 }

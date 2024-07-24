@@ -1,7 +1,5 @@
 package com.topicos.catalog.models;
 
-import java.util.Locale.Category;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +17,5 @@ public class Product {
     private String image;
 
     @ManyToOne
-    private Category category;
-    
+    private ProductCategory category;
 }

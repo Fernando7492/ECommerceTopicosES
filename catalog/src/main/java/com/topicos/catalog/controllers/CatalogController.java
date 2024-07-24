@@ -1,4 +1,4 @@
-package com.topicos.catalog;
+package com.topicos.catalog.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;

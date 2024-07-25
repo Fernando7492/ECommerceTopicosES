@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface InterfaceCreateProduct {
 
-    List<Product> listProducts(String descricao);
+    List<Product> listProducts(String description);
 
-    List<Product> listProductsByCategory(String nome);
+    List<Product> listProductsByCategory(String name);
 
     Product saveProduct(Product entity);
 

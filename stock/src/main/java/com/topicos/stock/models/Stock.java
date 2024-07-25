@@ -11,8 +11,8 @@ public class Stock {
     private long id;
     private long productId;
     private int quantity;
+    private String code;
 
     @ManyToOne
-    @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
 }

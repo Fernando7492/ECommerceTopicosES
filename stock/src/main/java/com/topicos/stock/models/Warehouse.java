@@ -2,6 +2,8 @@ package com.topicos.stock.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import java.util.List;
 
@@ -13,10 +15,9 @@ public class Warehouse {
     private long id;
     private String name;
     private String description;
+    private String code;
 
     @OneToOne
+    @Cascade(CascadeType.ALL)
     private Address address;
-
-    @OneToMany(mappedBy = "warehouse")
-    private List<Stock> stocks;
 }

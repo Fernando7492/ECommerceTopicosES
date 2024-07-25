@@ -1,2 +1,8 @@
-package com.topicos.stock.controllers;public class ProductController {
+package com.topicos.stock.controllers;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class WarehouseController {
+
 }

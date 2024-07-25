@@ -1,2 +1,4 @@
-package com.topicos.stock.controllers;public class StockController {
+package com.topicos.stock.controllers;
+
+public class StockController {
 }

@@ -4,10 +4,11 @@ import com.topicos.catalog.create.interfaces.InterfaceCreateProduct;
 import com.topicos.catalog.models.Product;
 import com.topicos.catalog.repositories.RepositoryProduct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class CreateProduct implements InterfaceCreateProduct {
 
     @Autowired

@@ -51,4 +51,14 @@ public class CreateCategory implements InterfaceCreateCategory {
         }
     }
 
+    @Override
+    public Category updateCategory(Long id, Category entity) {
+        Category category = findCategory(id);
+        category.setName(entity.getName());
+        category.setDescription(entity.getDescription());
+        category.setParentCategory(entity.getParentCategory());
+        category.setIcon(entity.getIcon());
+        return repositoryCategory.save(category);
+    }
+
 }

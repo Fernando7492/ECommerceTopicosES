@@ -1,6 +1,5 @@
 package com.topicos.catalog.controllers;
 
-import com.topicos.catalog.config.ConfigModelMapper;
 import com.topicos.catalog.controllers.request.CategoryRequest;
 import com.topicos.catalog.controllers.response.CategoryResponse;
 import com.topicos.catalog.frontage.Catalog;
@@ -19,16 +18,13 @@ public class CategoryController {
     @Autowired
     private Catalog catalog;
 
-    @Autowired
-    private ConfigModelMapper modelMapper;
-
     @PostMapping("/category")
     Category saveCategory(@Validated @RequestBody CategoryRequest newObj) {
         return catalog.saveCategory(newObj.convertToModel());
     }
 
     @GetMapping("/category")
-    List<CategoryResponse> listCategorys() {
+    List<CategoryResponse> listCategories() {
         List<CategoryResponse> response = new ArrayList<CategoryResponse>();
         for(Category c : catalog.listCategorys())
             response.add(new CategoryResponse(c));

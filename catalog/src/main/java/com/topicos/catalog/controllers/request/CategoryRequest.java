@@ -12,6 +12,8 @@ public class CategoryRequest {
     private String description;
     private String icon;
 
+    private long parentCategory;
+
     public Category convertToModel() {
         ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");
         Category category = modelMapper.map(this, Category.class);

@@ -17,5 +17,5 @@ public class Product {
     private String image;
 
     @ManyToOne
-    private ProductCategory category;
+    private Category category;
 }

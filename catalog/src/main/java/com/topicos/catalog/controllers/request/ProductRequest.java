@@ -12,6 +12,8 @@ public class ProductRequest {
     private String description;
     private String image;
 
+    private long categoryId;
+
     public Product convertToModel() {
         ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");
         Product product = modelMapper.map(this, Product.class);

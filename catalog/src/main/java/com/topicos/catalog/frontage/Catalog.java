@@ -55,4 +55,7 @@ public class Catalog {
     public void deleteProduct(Product entity) {
         interfaceCreateProduct.deleteProduct(entity);
     }
+    public Product updateProduct(Long id, Product entity) {
+        return interfaceCreateProduct.updateProduct(id, entity);
+    }
 }

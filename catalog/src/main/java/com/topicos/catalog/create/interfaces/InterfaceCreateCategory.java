@@ -8,6 +8,8 @@ public interface InterfaceCreateCategory {
 
     Category saveCategory(Category entity);
 
+    Category updateCategory(Long id, Category entity);
+
     List<Category> listCategorys();
 
     void deleteCategory(Long id);

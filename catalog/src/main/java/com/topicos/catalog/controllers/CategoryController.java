@@ -39,4 +39,15 @@ public class CategoryController {
     CategoryResponse listCategory(@PathVariable long id) {
         return new CategoryResponse(catalog.findCategory(id));
     }
+
+    @DeleteMapping("/category/{id}")
+    ResponseEntity<?> deleteCategory(@PathVariable long id) {
+        catalog.deleteCategory(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/category/{id}")
+    Category updateCategory(@PathVariable long id, @Validated @RequestBody CategoryRequest newObj) {
+        return catalog.updateCategory(id, newObj.convertToModel());
+    }
 }

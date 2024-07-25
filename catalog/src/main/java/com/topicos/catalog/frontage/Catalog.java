@@ -31,6 +31,9 @@ public class Catalog {
     public Category findCategory(Long id) {
         return interfaceCreateCategory.findCategory(id);
     }
+    public Category updateCategory(Long id, Category entity) {
+        return interfaceCreateCategory.updateCategory(id, entity);
+    }
     public List<Product> listProducts(String descricao) {
         return interfaceCreateProduct.listProducts(descricao);
     }

@@ -13,7 +13,7 @@ public class CategoryResponse {
     private String name;
     private String description;
     private String icon;
-    private long parentCategoryId;
+    private long parentCategory;
 
     public CategoryResponse(Category category) {
         ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");

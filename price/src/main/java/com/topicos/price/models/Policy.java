@@ -1,25 +1,16 @@
-package com.topicos.catalog.models;
+package com.topicos.price.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
-
 @Data
 @Entity
-public class Category {
-
+public class Policy {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
     private String name;
     private String description;
-    private String icon;
-
-    @ManyToOne
-    @JoinColumn(name = "parent_category")
-    private Category parentCategory;
-
+    private double discount;
 }

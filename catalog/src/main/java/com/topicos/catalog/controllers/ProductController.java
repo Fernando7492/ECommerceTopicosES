@@ -1,6 +1,5 @@
 package com.topicos.catalog.controllers;
 
-import com.topicos.catalog.config.ConfigModelMapper;
 import com.topicos.catalog.controllers.request.ProductRequest;
 import com.topicos.catalog.controllers.response.ProductResponse;
 import com.topicos.catalog.frontage.Catalog;
@@ -23,9 +22,6 @@ public class ProductController {
 
     @Autowired
     private Catalog catalog;
-
-    @Autowired
-    private ConfigModelMapper modelMapper;
 
     @PostMapping("/product")
     Product saveProduct(@Validated @RequestBody ProductRequest newObj) {

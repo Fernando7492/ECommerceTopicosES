@@ -21,4 +21,6 @@ public interface InterfaceCreateProduct {
 
     void deleteProduct(Product entity);
 
+    Product updateProduct(Long id, Product entity);
+
 }

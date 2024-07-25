@@ -48,4 +48,13 @@ public class CreateProduct implements InterfaceCreateProduct {
     public void deleteProduct(Product entity) {
         repositoryProduct.delete(entity);
     }
+
+    @Override
+    public Product updateProduct(Long id, Product entity) {
+        Product product = findByProductId(id).get();
+        product.setName(entity.getName());
+        product.setDescription(entity.getDescription());
+        product.setCategory(entity.getCategory());
+        return repositoryProduct.save(product);
+    }
 }

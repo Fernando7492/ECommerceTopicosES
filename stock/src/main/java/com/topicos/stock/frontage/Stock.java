@@ -3,10 +3,12 @@ package com.topicos.stock.frontage;
 import com.topicos.stock.create.interfaces.InterfaceCreateWarehouse;
 import com.topicos.stock.models.Warehouse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class Stocks {
+@Service
+public class Stock {
 
     @Autowired
     private InterfaceCreateWarehouse interfaceCreateWarehouse;

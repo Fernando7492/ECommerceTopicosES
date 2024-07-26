@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.topicos.price.create.exception.DuplicatedRegisterException;
 import com.topicos.price.create.interfaces.InterfaceCreatePrice;
 import com.topicos.price.models.Price;
 import com.topicos.price.repositories.RepositoryPrice;
@@ -17,11 +16,8 @@ public class CreatePrice implements InterfaceCreatePrice {
 
     @Override
     public Price savePrice(Price entity) {
-        if(repositoryPrice.findByProductId(entity.getProductId()) == null) {
-            return repositoryPrice.save(entity);
-        } else {
-            throw new DuplicatedRegisterException("A política ["+ entity.getProductId() + "] já se encontra cadastrada no sistema.");
-        }
+        return repositoryPrice.save(entity);
+        
     }
 
     @Override

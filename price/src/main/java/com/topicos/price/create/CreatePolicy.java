@@ -18,14 +18,14 @@ public class CreatePolicy implements InterfaceCreatePolicy {
 
     @Override
     public Policy savePolicy(Policy entity) {
-        if(repositoryPolicy.findByNameContainingIgnoreCase(entity.getName())!=null) {
+        if(repositoryPolicy.findByNameContainingIgnoreCase(entity.getName())==null) {
             throw new DuplicatedRegisterException("A política ["+ entity.getName() + "] já se encontra cadastrada no sistema.");
         }
         return repositoryPolicy.save(entity);
     }
 
     @Override
-    public Policy updatePolicy(String id, Policy entity) {
+    public Policy updatePolicy(Long id, Policy entity) {
         Policy policy = findPolicy(id).get();
         policy.setName(entity.getName());
         policy.setDescription(entity.getDescription());
@@ -34,12 +34,12 @@ public class CreatePolicy implements InterfaceCreatePolicy {
     }
 
     @Override
-    public Optional<Policy> findPolicy(String id) {
+    public Optional<Policy> findPolicy(Long id) {
         return repositoryPolicy.findById(id);
     }
 
     @Override
-    public void deletePolicy(String id) {
+    public void deletePolicy(Long id) {
         repositoryPolicy.deleteById(id);
     }
 

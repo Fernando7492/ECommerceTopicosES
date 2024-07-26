@@ -11,10 +11,10 @@ import lombok.Data;
 @Entity
 public class Price {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private double value;
-    private long productId;
+    private Long id;
+    private Double value;
+    private Long productId;
 
     @ManyToOne
-    private long policy;
+    private Policy policy;
 }

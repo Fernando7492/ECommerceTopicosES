@@ -15,7 +15,6 @@ public class StockRequest {
 
     public Stock convertToModel() {
         ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");
-        Stock stock = modelMapper.map(this, Stock.class);
-        return stock;
+        return modelMapper.map(this, Stock.class);
     }
 }

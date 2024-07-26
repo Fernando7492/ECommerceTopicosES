@@ -7,15 +7,13 @@ import java.util.Optional;
 
 public interface InterfaceCreateStock {
 
-    List<Stock> listStocksByWarehouse(String nome);
-
     Stock saveStock(Stock entity);
 
     List<Stock> listStocks();
 
+    List<Stock> listStocksByWarehouse(String nome);
+
     Optional<Stock> findByStockId(Long id);
 
     void deleteStock(Long id);
-
-    void deleteStock(Stock entity);
 }

@@ -9,8 +9,8 @@ import lombok.Data;
 @Entity
 public class Policy {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
     private String name;
     private String description;
-    private double discount;
+    private Double discount;
 }

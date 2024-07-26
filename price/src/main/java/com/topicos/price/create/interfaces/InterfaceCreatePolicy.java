@@ -7,9 +7,9 @@ import com.topicos.price.models.Policy;
 
 public interface InterfaceCreatePolicy {
     Policy savePolicy(Policy entity);
-    Policy updatePolicy(String id, Policy entity);
-    Optional<Policy> findPolicy(String id);
-    void deletePolicy(String id);
+    Policy updatePolicy(Long id, Policy entity);
+    Optional<Policy> findPolicy(Long id);
+    void deletePolicy(Long id);
     void deletePolicy(Policy entity);
     List<Policy> listPolicies();
 }

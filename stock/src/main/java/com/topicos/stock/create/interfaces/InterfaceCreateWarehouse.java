@@ -3,6 +3,7 @@ package com.topicos.stock.create.interfaces;
 import com.topicos.stock.models.Warehouse;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface InterfaceCreateWarehouse {
 
@@ -10,10 +11,8 @@ public interface InterfaceCreateWarehouse {
 
     List<Warehouse> listWarehouses();
 
+    Optional<Warehouse> findByWarehouseId(Long id);
+
     void deleteWarehouse(Long id);
-
-    void deleteWarehouse(Warehouse entity);
-
-    Warehouse findCategory(Long id);
 
 }

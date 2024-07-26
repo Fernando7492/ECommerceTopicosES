@@ -8,16 +8,16 @@ import org.modelmapper.ModelMapper;
 
 @Getter @Setter
 public class WarehouseRequest {
+    private Long id;
     private String name;
     private String description;
     private String code;
 
-    // tratar a parte de endereço
+    // TODO: tratar a parte de endereço
 
     public Warehouse convertToModel(){
         ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");
-        Warehouse warehouse = modelMapper.map(this, Warehouse.class);
-        return warehouse;
+        return modelMapper.map(this, Warehouse.class);
     }
 
 }

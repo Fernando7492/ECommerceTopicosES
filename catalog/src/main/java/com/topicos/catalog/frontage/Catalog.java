@@ -28,7 +28,7 @@ public class Catalog {
     public void deleteCategory(Category entity) {
         interfaceCreateCategory.deleteCategory(entity);
     }
-    public Category findCategory(Long id) {
+    public Optional<Category> findCategory(Long id) {
         return interfaceCreateCategory.findCategory(id);
     }
     public Category updateCategory(Long id, Category entity) {

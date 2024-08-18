@@ -19,7 +19,7 @@ public class Category {
     private String icon;
 
     @ManyToOne
-    @JoinColumn(name = "parent_category")
-    private Category parentCategory;
+    @JoinColumn(name = "parent_id")
+    private Category parent;
 
 }

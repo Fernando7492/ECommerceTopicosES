@@ -3,6 +3,7 @@ package com.topicos.catalog.create.interfaces;
 import com.topicos.catalog.models.Category;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface InterfaceCreateCategory {
 
@@ -16,5 +17,5 @@ public interface InterfaceCreateCategory {
 
     void deleteCategory(Category entity);
 
-    Category findCategory(Long id);
+    Optional<Category> findCategory(Long id);
 }

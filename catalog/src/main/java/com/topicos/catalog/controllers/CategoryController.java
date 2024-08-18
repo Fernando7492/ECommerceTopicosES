@@ -2,6 +2,7 @@ package com.topicos.catalog.controllers;
 
 import com.topicos.catalog.controllers.request.CategoryRequest;
 import com.topicos.catalog.controllers.response.CategoryResponse;
+import com.topicos.catalog.create.exception.ObjectNotFoundException;
 import com.topicos.catalog.frontage.Catalog;
 import com.topicos.catalog.models.Category;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class CategoryController {
@@ -19,21 +21,30 @@ public class CategoryController {
     private Catalog catalog;
 
     @PostMapping("/category")
-    Category saveCategory(@Validated @RequestBody CategoryRequest newObj) {
-        return catalog.saveCategory(newObj.convertToModel());
+    public Category saveCategory(@Validated @RequestBody CategoryRequest newObj) {
+        Category parent = null;
+        if (newObj.getParent() != null) {
+            parent = catalog.findCategory(newObj.getParent()).orElseThrow(() -> new ObjectNotFoundException("Categoria pai não encontrada"));
+        }
+
+        Category category = newObj.convertToModel(parent);
+        
+        return catalog.saveCategory(category);
     }
 
     @GetMapping("/category")
     List<CategoryResponse> listCategories() {
-        List<CategoryResponse> response = new ArrayList<CategoryResponse>();
-        for(Category c : catalog.listCategorys())
+        List<CategoryResponse> response = new ArrayList<>();
+        for (Category c : catalog.listCategories()) {
             response.add(new CategoryResponse(c));
+        }
         return response;
     }
 
     @GetMapping("/category/{id}")
     CategoryResponse listCategory(@PathVariable long id) {
-        return new CategoryResponse(catalog.findCategory(id));
+        Optional<Category> category = catalog.findCategory(id);
+        return category.map(CategoryResponse::new).orElse(null);
     }
 
     @DeleteMapping("/category/{id}")
@@ -44,6 +55,6 @@ public class CategoryController {
 
     @PutMapping("/category/{id}")
     Category updateCategory(@PathVariable long id, @Validated @RequestBody CategoryRequest newObj) {
-        return catalog.updateCategory(id, newObj.convertToModel());
+        return catalog.updateCategory(id, newObj.convertToModel(catalog.findCategory(newObj.getParent())));
     }
 }

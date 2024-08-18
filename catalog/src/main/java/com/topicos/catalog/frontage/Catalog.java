@@ -19,8 +19,8 @@ public class Catalog {
     private InterfaceCreateProduct interfaceCreateProduct;
 
     public Category saveCategory(Category entity) { return interfaceCreateCategory.saveCategory(entity); }
-    public List<Category> listCategorys() {
-        return interfaceCreateCategory.listCategorys();
+    public List<Category> listCategories() {
+        return interfaceCreateCategory.listCategories();
     }
     public void deleteCategory(Long id) {
         interfaceCreateCategory.deleteCategory(id);
@@ -28,7 +28,7 @@ public class Catalog {
     public void deleteCategory(Category entity) {
         interfaceCreateCategory.deleteCategory(entity);
     }
-    public Category findCategory(Long id) {
+    public Optional<Category> findCategory(Long id) {
         return interfaceCreateCategory.findCategory(id);
     }
     public Category updateCategory(Long id, Category entity) {

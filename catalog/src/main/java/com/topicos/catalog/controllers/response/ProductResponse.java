@@ -13,7 +13,7 @@ public class ProductResponse {
     private String name;
     private String description;
     private String image;
-    private long categoryId;
+    private Long categoryId;
 
     public ProductResponse(Product product) {
         ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");

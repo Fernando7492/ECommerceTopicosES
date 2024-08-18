@@ -12,7 +12,7 @@ public class ProductRequest {
     private String description;
     private String image;
 
-    private long categoryId;
+    private Long categoryId;
 
     public Product convertToModel() {
         ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");

@@ -27,7 +27,7 @@ public class CreateCategory implements InterfaceCreateCategory {
     }
 
     @Override
-    public List<Category> listCategorys() {
+    public List<Category> listCategories() {
         return repositoryCategory.findAll();
     }
 
@@ -42,10 +42,15 @@ public class CreateCategory implements InterfaceCreateCategory {
     }
 
     @Override
-    public Category findCategory(Long id) {
+    public Optional<Category> findCategory(Long id) {
+        if (id == null) {
+            throw new ObjectNotFoundException("O id não pode ser nulo");
+            
+        }
+        
         Optional<Category> optional = repositoryCategory.findById(id);
         if(optional.isPresent()) {
-            return optional.get();
+            return optional;
         } else {
             throw new ObjectNotFoundException("Não existe categoria com o id: " + id);
         }
@@ -53,10 +58,10 @@ public class CreateCategory implements InterfaceCreateCategory {
 
     @Override
     public Category updateCategory(Long id, Category entity) {
-        Category category = findCategory(id);
+        Category category = repositoryCategory.findById(id).orElse(null);
         category.setName(entity.getName());
         category.setDescription(entity.getDescription());
-        category.setParentCategory(entity.getParentCategory());
+        category.setParent(entity.getParent());
         category.setIcon(entity.getIcon());
         return repositoryCategory.save(category);
     }

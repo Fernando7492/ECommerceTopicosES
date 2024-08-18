@@ -15,20 +15,20 @@ import java.util.Map;
 public class CustomExceptionHandler {
 
     @ExceptionHandler(DuplicateRecordException.class)
-	protected ResponseEntity<Object> handleDuplicateRecordException(DuplicateRecordException exception) {
-		Map<String, Object> response = new HashMap<>();
+    protected ResponseEntity<Object> handleDuplicateRecordException(DuplicateRecordException exception) {
+        Map<String, Object> response = new HashMap<>();
         Map<String, String> error = new HashMap<>();
 
-		error.put("type", "DuplicateRecord");
-		error.put("message", exception.getMessage());
-		response.put("error", error);
+        error.put("type", "DuplicateRecord");
+        error.put("message", exception.getMessage());
+        response.put("error", error);
 
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-	}
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
-	@ExceptionHandler(RecordNotFoundException.class)
-	protected ResponseEntity<Object> handleRecordNotFoundException(RecordNotFoundException exception) {
-		Map<String, Object> response = new HashMap<>();
+    @ExceptionHandler(RecordNotFoundException.class)
+    protected ResponseEntity<Object> handleRecordNotFoundException(RecordNotFoundException exception) {
+        Map<String, Object> response = new HashMap<>();
         Map<String, String> error = new HashMap<>();
 
         error.put("type", "RecordNotFound");
@@ -36,5 +36,5 @@ public class CustomExceptionHandler {
         response.put("error", error);
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-	}
+    }
 }

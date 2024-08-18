@@ -16,10 +16,10 @@ import java.util.Optional;
 @RestController
 public class WarehouseController {
     @Autowired
-	private Storage storage;
+    private Storage storage;
 
-	@Autowired
-	private ModelMapper modelMapper;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping("/warehouse")
     Warehouse saveWarehouse(@Validated @RequestBody WarehouseRequest newObj) {

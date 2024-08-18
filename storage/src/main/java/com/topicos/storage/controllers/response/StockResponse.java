@@ -6,13 +6,15 @@ import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
-@Getter @Setter
+@Getter
+@Setter
 public class StockResponse {
 
     private long id;
-    private long productId;
     private int quantity;
     private String code;
+
+    private long productId;
     private long warehouseId;
 
     public StockResponse(Stock stock) {

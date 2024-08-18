@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface StockRepository extends JpaRepository<Stock, Long> {
     Stock findByCodeIgnoreCase(String code);
+
     List<Stock> findByWarehouse_nameIgnoreCase(String warehouseName);
+
     List<Stock> findByWarehouse_codeIgnoreCase(String warehouseCode);
 }

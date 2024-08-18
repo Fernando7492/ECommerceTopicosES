@@ -16,26 +16,26 @@ import java.util.Map;
 @ControllerAdvice
 public class StandardExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@Override
-	protected ResponseEntity<Object> handleMethodArgumentNotValid(
-        MethodArgumentNotValidException ex,
-        HttpHeaders headers,
-        HttpStatusCode status,
-        WebRequest request
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request
     ) {
-	    Map<String, Object> errors = new HashMap<>();
+        Map<String, Object> errors = new HashMap<>();
         Map<String, Object> response = new HashMap<>();
 
-	    ex.getBindingResult().getAllErrors().forEach(error -> {
+        ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
 
-	    response.put("type", "ValidationError");
+        response.put("type", "ValidationError");
         response.put("status", status.value());
-	    response.put("error", errors);
+        response.put("error", errors);
 
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-	}
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }

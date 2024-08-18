@@ -61,12 +61,13 @@ public class CreateStock implements InterfaceCreateStock {
     }
 
     @Override
-    public Stock updateStock(Long id, Stock entity){
+    public Stock updateStock(Long id, Stock entity) {
         Stock stock = stockRepository.findById(id).get();
         stock.setCode(entity.getCode());
         stock.setWarehouse(entity.getWarehouse());
         stock.setQuantity(entity.getQuantity());
         stock.setProductId(entity.getProductId());
+
         return stockRepository.save(stock);
     }
 }

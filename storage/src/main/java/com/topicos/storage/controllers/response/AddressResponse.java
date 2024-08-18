@@ -14,9 +14,9 @@ public class AddressResponse {
     private String zipCode;
 
     public AddressResponse(Address obj) {
-        if(obj == null) throw new IllegalArgumentException("Objeto nulo");
+        if (obj == null) throw new IllegalArgumentException("Objeto nulo");
         else {
-            ModelMapper modelMapper =(ModelMapper) SpringApplicationContext.getBean("modelMapper");
+            ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");
             modelMapper.map(obj, this);
         }
     }

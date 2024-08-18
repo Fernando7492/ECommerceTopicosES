@@ -3,6 +3,7 @@ package com.topicos.storage.create;
 import com.topicos.storage.create.exception.DuplicateRecordException;
 import com.topicos.storage.create.exception.RecordNotFoundException;
 import com.topicos.storage.create.interfaces.InterfaceCreateWarehouse;
+import com.topicos.storage.models.Address;
 import com.topicos.storage.models.Warehouse;
 import com.topicos.storage.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +53,27 @@ public class CreateWarehouse implements InterfaceCreateWarehouse {
 
     @Override
     public Warehouse updateWarehouse(Long id, Warehouse entity) {
-        Warehouse warehouse = warehouseRepository.findById(id).get();
-        warehouse.setCode(entity.getCode());
+        Warehouse warehouse = warehouseRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Warehouse not found"));
+
         warehouse.setName(entity.getName());
         warehouse.setDescription(entity.getDescription());
-        warehouse.setAddress(entity.getAddress());
+        warehouse.setCode(entity.getCode());
+
+        if (warehouse.getAddress() != null) {
+            Address existingAddress = warehouse.getAddress();
+            Address newAddress = entity.getAddress();
+
+            existingAddress.setStreet(newAddress.getStreet());
+            existingAddress.setNumber(newAddress.getNumber());
+            existingAddress.setNeighborhood(newAddress.getNeighborhood());
+            existingAddress.setCity(newAddress.getCity());
+            existingAddress.setState(newAddress.getState());
+            existingAddress.setCountry(newAddress.getCountry());
+            existingAddress.setZipCode(newAddress.getZipCode());
+        } else {
+            warehouse.setAddress(entity.getAddress());
+        }
+
         return warehouseRepository.save(warehouse);
     }
 }

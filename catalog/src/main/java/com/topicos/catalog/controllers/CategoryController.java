@@ -26,7 +26,7 @@ public class CategoryController {
     @GetMapping("/category")
     List<CategoryResponse> listCategories() {
         List<CategoryResponse> response = new ArrayList<CategoryResponse>();
-        for(Category c : catalog.listCategorys())
+        for(Category c : catalog.listCategories())
             response.add(new CategoryResponse(c));
         return response;
     }

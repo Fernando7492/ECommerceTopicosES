@@ -19,8 +19,8 @@ public class Catalog {
     private InterfaceCreateProduct interfaceCreateProduct;
 
     public Category saveCategory(Category entity) { return interfaceCreateCategory.saveCategory(entity); }
-    public List<Category> listCategorys() {
-        return interfaceCreateCategory.listCategorys();
+    public List<Category> listCategories() {
+        return interfaceCreateCategory.listCategories();
     }
     public void deleteCategory(Long id) {
         interfaceCreateCategory.deleteCategory(id);

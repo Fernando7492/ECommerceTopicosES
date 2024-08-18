@@ -10,7 +10,7 @@ public interface InterfaceCreateCategory {
 
     Category updateCategory(Long id, Category entity);
 
-    List<Category> listCategorys();
+    List<Category> listCategories();
 
     void deleteCategory(Long id);
 

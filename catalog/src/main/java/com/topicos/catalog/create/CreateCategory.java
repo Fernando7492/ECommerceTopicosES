@@ -27,7 +27,7 @@ public class CreateCategory implements InterfaceCreateCategory {
     }
 
     @Override
-    public List<Category> listCategorys() {
+    public List<Category> listCategories() {
         return repositoryCategory.findAll();
     }
 

@@ -27,7 +27,7 @@ public class CreateProduct implements InterfaceCreateProduct {
 
     @Override
     public  Product saveProduct(Product entity) {
-        if(repositoryProduct.findByNameContainingIgnoreCase(entity.getName())!= null) {
+        if(repositoryProduct.findByNameContainingIgnoreCase(entity.getName())== null) {
             throw new DuplicatedRegisterException("Já existe um produto com o nome ["+ entity.getName() + "] cadastrado no sistema.");
         }
         return repositoryProduct.save(entity);

@@ -18,16 +18,6 @@ public class CreateStock implements InterfaceCreateStock {
     private StockRepository stockRepository;
 
     @Override
-    public List<Stock> listStocksByWarehouse(String name) {
-        return stockRepository.findByWarehouse_nameIgnoreCase(name);
-    }
-
-    @Override
-    public List<Stock> listStocks() {
-        return stockRepository.findAll();
-    }
-
-    @Override
     public Stock saveStock(Stock entity) {
         String code = entity.getCode();
 
@@ -36,6 +26,16 @@ public class CreateStock implements InterfaceCreateStock {
         } else {
             throw new DuplicateRecordException("Stock with code " + code + " already exists");
         }
+    }
+
+    @Override
+    public List<Stock> listStocksByWarehouse(String name) {
+        return stockRepository.findByWarehouse_nameIgnoreCase(name);
+    }
+
+    @Override
+    public List<Stock> listStocks() {
+        return stockRepository.findAll();
     }
 
     @Override
@@ -62,11 +62,12 @@ public class CreateStock implements InterfaceCreateStock {
 
     @Override
     public Stock updateStock(Long id, Stock entity) {
-        Stock stock = stockRepository.findById(id).get();
+        Stock stock = stockRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Stock not found"));
+
         stock.setCode(entity.getCode());
-        stock.setWarehouse(entity.getWarehouse());
         stock.setQuantity(entity.getQuantity());
         stock.setProductId(entity.getProductId());
+        stock.setWarehouse(entity.getWarehouse());
 
         return stockRepository.save(stock);
     }

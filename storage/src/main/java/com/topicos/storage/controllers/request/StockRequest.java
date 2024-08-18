@@ -14,7 +14,7 @@ public class StockRequest {
     @NotBlank(message = "Code is mandatory")
     private String code;
 
-    private long product;
+    private long productId;
     private long warehouse;
 
     public Stock convertToModel() {

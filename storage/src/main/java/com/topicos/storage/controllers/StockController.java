@@ -2,6 +2,7 @@ package com.topicos.storage.controllers;
 
 import com.topicos.storage.controllers.request.StockRequest;
 import com.topicos.storage.controllers.response.StockResponse;
+import com.topicos.storage.create.exception.RecordNotFoundException;
 import com.topicos.storage.frontage.Storage;
 import com.topicos.storage.models.Stock;
 import com.topicos.storage.models.Warehouse;
@@ -24,7 +25,16 @@ public class StockController {
 
     @PostMapping("/stock")
     public Stock saveStock(@Validated @RequestBody StockRequest newObj) {
-        return storage.saveStock(newObj.convertToModel());
+        Warehouse warehouse = storage.findWarehouse(newObj.getWarehouse()).orElse(null);
+
+        if (warehouse == null) {
+            throw new RecordNotFoundException("Warehouse with id " + newObj.getWarehouse() + " not found");
+        }
+
+        Stock stock = newObj.convertToModel();
+        stock.setWarehouse(warehouse);
+
+        return storage.saveStock(stock);
     }
 
     @GetMapping("/stock")
@@ -62,6 +72,15 @@ public class StockController {
 
     @PutMapping("/stock/{id}")
     Stock updateStock(@PathVariable long id, @RequestBody StockRequest newObj) {
-        return storage.updateStock(id, newObj.convertToModel());
+        Warehouse warehouse = storage.findWarehouse(newObj.getWarehouse()).orElse(null);
+
+        if (warehouse == null) {
+            throw new RecordNotFoundException("Warehouse with id " + newObj.getWarehouse() + " not found");
+        }
+
+        Stock stock = newObj.convertToModel();
+        stock.setWarehouse(warehouse);
+
+        return storage.updateStock(id, stock);
     }
 }

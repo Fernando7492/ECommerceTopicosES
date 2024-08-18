@@ -9,9 +9,10 @@ public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long productId;
     private int quantity;
     private String code;
+
+    private long productId;
 
     @ManyToOne
     @JoinColumn(name = "warehouse_id")

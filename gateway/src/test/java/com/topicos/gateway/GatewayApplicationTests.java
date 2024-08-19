@@ -1,10 +1,10 @@
-package com.topicos.storage;
+package com.topicos.gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class StocksApplicationTests {
+class GatewayApplicationTests {
 
 	@Test
 	void contextLoads() {

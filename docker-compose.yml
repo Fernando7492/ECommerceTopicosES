@@ -1,0 +1,82 @@
+services:
+  postgres-catalog:
+    image: postgres:14
+    container_name: postgres-catalog
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: catalog
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-catalog-data:/var/lib/postgresql/data
+  postgres-price:
+    image: postgres:14
+    container_name: postgres-price
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: price
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres-price-data:/var/lib/postgresql/data
+  postgres-storage:
+    image: postgres:14
+    container_name: postgres-storage
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: storage
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres-storage-data:/var/lib/postgresql/data
+
+  discovery:
+    build: discovery
+    mem_limit: 512m
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+  gateway:
+    build: gateway
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  catalog:
+    build: catalog
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - postgres-catalog
+  price:
+    build: price
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - postgres-price
+  storage:
+    build: storage
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - postgres-storage
+
+  message:
+     image: "rabbitmq:3-management"
+     ports:
+       - "5672:5672"
+       - "15672:15672"
+
+volumes:
+  postgres-catalog-data:
+  postgres-price-data:
+  postgres-storage-data:

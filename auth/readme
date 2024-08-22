@@ -1,0 +1,30 @@
+Para rodar o auth na sua maquina execute o comando:
+ docker run -p 8090:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:25.0.4 start-dev
+
+ Em seguida abra no navegador em http://localhost:8090 e faça o login com o usuário admin e senha admin.
+ No canto superior esquedo selecione a opção para criar um novo realm, e no campo Resource file importe o arquivo realm-export.json que está na pasta auth.
+
+ Agora é necessário criar um cliente para a aplicação. Para isso, vá em Clients -> Create e preencha os campos da seguinte forma:
+
+Client ID: app_user
+email: user@mail.com
+firs name: app
+last name: user
+
+Depois de criar o user, acesse o mesmo e na aba credenciais crie uma senha para ele.
+Coloque a senha "user" e clique em "Save Password".
+
+ Pronto, o keycloack está configurado e pronto para ser utilizado.
+
+
+Para gerar um token de acesso, faça uma requisição POST para http://localhost:8090/auth/realms/ecommerce/protocol/openid-connect/token com o seguinte corpo no formato x-www-form-urlencoded:
+
+client_id: app_user
+client_secret: pPB0p3gSkZ0iDyt0NcLLarXtd0ubSyP7
+grant_type: password
+username: app_user
+password: user
+
+
+Essa requisição retorna um token de acesso que deve ser utilizado para acessar os endpoints da aplicação.
+Para fazer a requisição com o token de acesso basta adicionar o header Authorization com o valor Bearer <token>.

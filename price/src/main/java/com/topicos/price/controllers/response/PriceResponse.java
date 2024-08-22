@@ -11,8 +11,8 @@ import lombok.Setter;
 public class PriceResponse {
     private long id;
     private double value;
-    private long productId;
-    private long policy;
+    private Long productId;
+    private Long policyId;
 
     public PriceResponse(Price price) {
         ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");

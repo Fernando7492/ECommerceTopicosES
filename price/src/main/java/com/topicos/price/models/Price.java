@@ -1,11 +1,7 @@
 package com.topicos.price.models;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 @Data
 @Entity
@@ -16,5 +12,6 @@ public class Price {
     private Long productId;
 
     @ManyToOne
+    @JoinColumn(name = "policy_id")
     private Policy policy;
 }

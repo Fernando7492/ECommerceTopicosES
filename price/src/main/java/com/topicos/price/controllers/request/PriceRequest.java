@@ -12,7 +12,7 @@ public class PriceRequest {
 
     private Double value;
     private Long productId;
-    private Long policy;
+    private Long policyId;
 
     public Price convertModel(){
         ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");

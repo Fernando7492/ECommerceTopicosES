@@ -55,6 +55,7 @@ public class CategoryController {
 
     @PutMapping("/category/{id}")
     Category updateCategory(@PathVariable long id, @Validated @RequestBody CategoryRequest newObj) {
-        return catalog.updateCategory(id, newObj.convertToModel(catalog.findCategory(newObj.getParent())));
+        Category parentCategory = catalog.findCategory(newObj.getParent()).orElse(null);
+        return catalog.updateCategory(id, newObj.convertToModel(parentCategory));
     }
 }

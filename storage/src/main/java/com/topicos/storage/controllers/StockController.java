@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/storage")
 public class StockController {
     @Autowired
     private Storage storage;

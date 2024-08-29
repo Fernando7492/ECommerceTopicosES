@@ -9,11 +9,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class CreateProduct implements InterfaceCreateProduct {
 
     @Autowired
     private RepositoryProduct repositoryProduct;
+
+    @Override
+    public Product saveProduct(Product entity) {
+        if (repositoryProduct.findByNameContainingIgnoreCase(entity.getName()) == null) {
+            throw new DuplicatedRegisterException("Já existe um produto com o nome [" + entity.getName() + "] cadastrado no sistema.");
+        }
+        return repositoryProduct.save(entity);
+    }
+
+    @Override
+    public List<Product> listProducts() {
+        return repositoryProduct.findAll();
+    }
 
     @Override
     public List<Product> listProducts(String description) {
@@ -23,19 +37,6 @@ public class CreateProduct implements InterfaceCreateProduct {
     @Override
     public List<Product> listProductsByCategory(String name) {
         return repositoryProduct.findByCategory_name(name);
-    }
-
-    @Override
-    public  Product saveProduct(Product entity) {
-        if(repositoryProduct.findByNameContainingIgnoreCase(entity.getName())== null) {
-            throw new DuplicatedRegisterException("Já existe um produto com o nome ["+ entity.getName() + "] cadastrado no sistema.");
-        }
-        return repositoryProduct.save(entity);
-    }
-
-    @Override
-    public List<Product> listProducts() {
-        return repositoryProduct.findAll();
     }
 
     @Override

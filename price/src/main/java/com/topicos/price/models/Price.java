@@ -3,11 +3,13 @@ package com.topicos.price.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 @Data
 @Entity
 public class Price {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private Double value;
     private Long productId;
 

@@ -1,6 +1,6 @@
 package com.topicos.catalog.controllers;
 
-import com.topicos.catalog.config.RabbitMQConfig;
+import com.topicos.catalog.config.RabbitMQSender;
 import com.topicos.catalog.controllers.request.ProductRequest;
 import com.topicos.catalog.controllers.response.ProductResponse;
 import com.topicos.catalog.frontage.Catalog;
@@ -23,12 +23,12 @@ public class ProductController {
     private Catalog catalog;
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private RabbitMQSender rabbitMQSender;
 
     @PostMapping("/product")
     Product saveProduct(@Validated @RequestBody ProductRequest newObj) {
         Product newProduct = catalog.saveProductProduct(newObj.convertToModel());
-        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, newProduct.getId());
+        rabbitMQSender.sendCategoryId(newProduct.getId());;
         return newProduct;
     }
 

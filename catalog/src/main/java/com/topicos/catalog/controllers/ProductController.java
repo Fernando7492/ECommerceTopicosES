@@ -6,7 +6,6 @@ import com.topicos.catalog.controllers.response.ProductResponse;
 import com.topicos.catalog.frontage.Catalog;
 import com.topicos.catalog.models.Product;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,7 @@ public class ProductController {
     @PostMapping("/product")
     Product saveProduct(@Validated @RequestBody ProductRequest newObj) {
         Product newProduct = catalog.saveProductProduct(newObj.convertToModel());
-        rabbitMQSender.sendCategoryId(newProduct.getId());;
+        rabbitMQSender.sendCategoryId(newProduct.getId());
         return newProduct;
     }
 

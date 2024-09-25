@@ -14,7 +14,7 @@ public class StockResponse {
     private int quantity;
     private String code;
 
-    private long productId;
+    private Long productId;
     private long warehouseId;
 
     public StockResponse(Stock stock) {

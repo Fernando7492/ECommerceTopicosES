@@ -10,6 +10,8 @@ services:
       - "5433:5432"
     volumes:
       - postgres-catalog-data:/var/lib/postgresql/data
+    networks:
+      - app-network
   postgres-price:
     image: postgres:14
     container_name: postgres-price
@@ -21,6 +23,8 @@ services:
       - "5434:5432"
     volumes:
       - postgres-price-data:/var/lib/postgresql/data
+    networks:
+      - app-network
   postgres-storage:
     image: postgres:14
     container_name: postgres-storage
@@ -32,6 +36,8 @@ services:
       - "5435:5432"
     volumes:
       - postgres-storage-data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
   discovery:
     build: discovery
@@ -40,6 +46,8 @@ services:
       - "8761:8761"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - app-network
   gateway:
     build: gateway
     mem_limit: 512m
@@ -47,6 +55,8 @@ services:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - app-network
 
   catalog:
     build: catalog
@@ -55,6 +65,9 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - postgres-catalog
+      - message    # Adicionado
+    networks:
+      - app-network
   price:
     build: price
     mem_limit: 512m
@@ -62,6 +75,8 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - postgres-price
+    networks:
+      - app-network
   storage:
     build: storage
     mem_limit: 512m
@@ -69,12 +84,16 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - postgres-storage
+    networks:
+      - app-network
 
   message:
     image: "rabbitmq:3-management"
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - app-network
 
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.4
@@ -104,3 +123,7 @@ volumes:
   postgres-catalog-data:
   postgres-price-data:
   postgres-storage-data:
+
+networks:
+  app-network:
+    driver: bridge

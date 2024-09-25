@@ -1,9 +1,11 @@
 package com.topicos.catalog.controllers;
 
+import com.topicos.catalog.config.RabbitMQSender;
 import com.topicos.catalog.controllers.request.ProductRequest;
 import com.topicos.catalog.controllers.response.ProductResponse;
 import com.topicos.catalog.frontage.Catalog;
 import com.topicos.catalog.models.Product;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +21,14 @@ public class ProductController {
     @Autowired
     private Catalog catalog;
 
+    @Autowired
+    private RabbitMQSender rabbitMQSender;
+
     @PostMapping("/product")
     Product saveProduct(@Validated @RequestBody ProductRequest newObj) {
-        return catalog.saveProductProduct(newObj.convertToModel());
+        Product newProduct = catalog.saveProductProduct(newObj.convertToModel());
+        rabbitMQSender.sendCategoryId(newProduct.getId());
+        return newProduct;
     }
 
     @GetMapping("/product")

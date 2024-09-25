@@ -12,7 +12,7 @@ public class Stock {
     private int quantity;
     private String code;
 
-    private long productId;
+    private Long productId;
 
     @ManyToOne
     @JoinColumn(name = "warehouse_id")

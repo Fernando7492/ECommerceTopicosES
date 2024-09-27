@@ -18,15 +18,9 @@ public class WarehouseResponse {
     private Address address;
 
     public WarehouseResponse(Warehouse warehouse) {
-        ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");
-        modelMapper.map(warehouse, this);
-
-        if (warehouse.getAddress() != null) {
-            modelMapper.map(warehouse.getAddress(), this);
-
-            // This is necessary because modelMapper gets confused with fields with the same name
-            this.id = warehouse.getId();
-            this.code = warehouse.getCode();
-        }
+        this.id = warehouse.getId();
+        this.name = warehouse.getName();
+        this.description = warehouse.getDescription();
+        this.code = warehouse.getCode();
     }
 }

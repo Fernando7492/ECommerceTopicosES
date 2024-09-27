@@ -24,10 +24,11 @@ public class WarehouseRequest {
     private String zipCode;
 
     public Warehouse convertToModel() {
-        ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");
-        Warehouse warehouse = modelMapper.map(this, Warehouse.class);
-        Address address = modelMapper.map(this, Address.class);
-        warehouse.setAddress(address);
+        Warehouse warehouse = new Warehouse();
+        warehouse.setName(this.name);
+        warehouse.setDescription(this.description);
+        warehouse.setCode(this.code);
+        warehouse.setAddressId(null);
 
         return warehouse;
     }

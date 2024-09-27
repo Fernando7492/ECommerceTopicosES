@@ -1,23 +1,20 @@
 package com.topicos.catalog.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
+
 import lombok.Data;
 
 @Data
-@Entity
+@Table("product")
 public class Product {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private long id;
     private String name;
     private String description;
     private String image;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @Column("category_id")
+    private long categoryId;
 }

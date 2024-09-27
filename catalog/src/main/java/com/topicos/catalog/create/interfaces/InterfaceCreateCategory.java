@@ -2,20 +2,21 @@ package com.topicos.catalog.create.interfaces;
 
 import com.topicos.catalog.models.Category;
 
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 
 public interface InterfaceCreateCategory {
 
-    Category saveCategory(Category entity);
+    Mono<Category> saveCategory(Category entity);
 
-    Category updateCategory(Long id, Category entity);
+    Mono<Category> updateCategory(Long id, Category entity);
 
-    List<Category> listCategories();
+    Flux<Category> listCategories();
 
     void deleteCategory(Long id);
 
     void deleteCategory(Category entity);
 
-    Optional<Category> findCategory(Long id);
+    Mono<Category> findCategory(Long id);
 }

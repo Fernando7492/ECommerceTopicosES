@@ -1,16 +1,18 @@
 package com.topicos.catalog.repositories;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
 import com.topicos.catalog.models.Product;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-public interface RepositoryProduct extends JpaRepository<Product,Long>{
+
+public interface RepositoryProduct extends ReactiveCrudRepository<Product,Long>{
     
-    List<Product> findByNameContainingIgnoreCase(String name);
-    List<Product> findByDescriptionContainingIgnoreCase(String description);
-    List<Product> findByCategory_name(String name);
+    Mono<Product> findByName(String name);
+    Mono<Product> findByNameContainingIgnoreCase(String name);
+    Flux<Product> findByDescriptionContainingIgnoreCase(String description);
+    Flux<Product> findByCategoryId(String name);
 
 }

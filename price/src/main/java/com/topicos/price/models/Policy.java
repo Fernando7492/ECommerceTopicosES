@@ -1,15 +1,15 @@
 package com.topicos.price.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;
+
 @Data
-@Entity
+@Table("policy")  // Define a tabela correspondente no banco de dados
 public class Policy {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id  // Define a chave primária
+    private Long id;  // O ID será gerado pelo banco (R2DBC usa @Id sem geração automática como no JPA)
+
     private String name;
     private String description;
     private Double discount;

@@ -6,12 +6,12 @@ import com.topicos.storage.frontage.Storage;
 import com.topicos.storage.models.Warehouse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/storage")
@@ -23,34 +23,27 @@ public class WarehouseController {
     private ModelMapper modelMapper;
 
     @PostMapping("/warehouse")
-    Warehouse saveWarehouse(@Validated @RequestBody WarehouseRequest newObj) {
+    Mono<Object> saveWarehouse(@Validated @RequestBody WarehouseRequest newObj) {
         return storage.saveWarehouse(newObj.convertToModel());
     }
 
     @GetMapping("/warehouse")
-    List<WarehouseResponse> listWarehouse() {
-        List<WarehouseResponse> response = new ArrayList<>();
-
-        for (Warehouse warehouse : storage.listWarehouses()) {
-            response.add(new WarehouseResponse(warehouse));
-        }
-
-        return response;
+    Flux<WarehouseResponse> listWarehouse() {
+        return storage.listWarehouses().map(WarehouseResponse::new);
     }
 
     @GetMapping("/warehouse/{id}")
-    WarehouseResponse listWarehouse(@PathVariable long id) {
-        Optional<Warehouse> warehouse = storage.findWarehouse(id);
-        return warehouse.map(WarehouseResponse::new).orElse(null);
+    Mono<WarehouseResponse> listWarehouse(@PathVariable long id) {
+        return storage.findWarehouse(id).map(WarehouseResponse::new);
     }
 
     @DeleteMapping("/warehouse/{id}")
-    public void deleteWarehouse(@PathVariable long id) {
-        storage.deleteWarehouse(id);
+    public Mono<ResponseEntity<Void>> deleteWarehouse(@PathVariable long id) {
+        return storage.deleteWarehouse(id).then(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
     }
 
     @PutMapping("/warehouse/{id}")
-    public Warehouse updateStock(@PathVariable long id, @RequestBody WarehouseRequest newObj) {
+    public Mono<Warehouse> updateStock(@PathVariable long id, @RequestBody WarehouseRequest newObj) {
         return storage.updateWarehouse(id, newObj.convertToModel());
     }
 }

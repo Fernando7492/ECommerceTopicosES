@@ -1,14 +1,9 @@
 package com.topicos.storage.repository;
 
 import com.topicos.storage.models.Stock;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
-
-public interface StockRepository extends JpaRepository<Stock, Long> {
-    Stock findByCodeIgnoreCase(String code);
-
-    List<Stock> findByWarehouse_nameIgnoreCase(String warehouseName);
-
-    List<Stock> findByWarehouse_codeIgnoreCase(String warehouseCode);
+public interface StockRepository extends ReactiveCrudRepository<Stock, Long> {
+    Mono<Stock> findByCodeIgnoreCase(String code);
 }

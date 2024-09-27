@@ -18,14 +18,11 @@ public class StockRequest {
     private long warehouse;
 
     public Stock convertToModel() {
-        //ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");
-        //return modelMapper.map(this, Stock.class);
-
         Stock stock = new Stock();
         stock.setQuantity(this.quantity);
         stock.setCode(this.code);
         stock.setProductId(this.productId);
-        stock.setWarehouse(null);
+        stock.setWarehouseId(this.warehouse);
 
         return stock;
     }

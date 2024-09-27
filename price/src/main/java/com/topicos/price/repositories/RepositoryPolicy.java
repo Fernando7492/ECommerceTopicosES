@@ -1,13 +1,12 @@
 package com.topicos.price.repositories;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import reactor.core.publisher.Flux;
 
 import com.topicos.price.models.Policy;
 
-public interface RepositoryPolicy extends JpaRepository<Policy,Long>{
-    List<Policy> findByNameContainingIgnoreCase(String name);
-    List<Policy> findByDescriptionContainingIgnoreCase(String description);
-    List<Policy> findByDiscount(double discount);
+public interface RepositoryPolicy extends ReactiveCrudRepository<Policy, Long> {
+    Flux<Policy> findByNameContainingIgnoreCase(String name);
+    Flux<Policy> findByDescriptionContainingIgnoreCase(String description);
+    Flux<Policy> findByDiscount(double discount);
 }

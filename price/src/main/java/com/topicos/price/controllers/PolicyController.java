@@ -1,13 +1,12 @@
 package com.topicos.price.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import com.topicos.price.controllers.request.PolicyRequest;
 import com.topicos.price.controllers.response.PolicyResponse;
@@ -22,28 +21,25 @@ public class PolicyController {
     private PriceFrontage priceFrontage;
 
     @GetMapping("/policy")
-    List<PolicyResponse> listPolicy() {
-        List<PolicyResponse> response = new ArrayList<PolicyResponse>();
-        for(Policy c : priceFrontage.listPolicies())
-            response.add(new PolicyResponse(c));
-        return response;
+    public Flux<PolicyResponse> listPolicy() {
+        return priceFrontage.listPolicies()
+            .map(PolicyResponse::new);  // Converte Policy para PolicyResponse de forma reativa
     }
 
     @PostMapping("/policy")
-    Policy savePolicy(@Validated @RequestBody PolicyRequest newObj) {
+    public Mono<Policy> savePolicy(@Validated @RequestBody PolicyRequest newObj) {
         return priceFrontage.savePolicy(newObj.convertModel());
     }
 
     @DeleteMapping("/policy/{id}")
-    ResponseEntity<?> deletePolicy(@PathVariable long id) {
-        priceFrontage.deletePolicy(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public Mono<ResponseEntity<Void>> deletePolicy(@PathVariable long id) {
+        return priceFrontage.deletePolicy(id)
+            .then(Mono.just(new ResponseEntity<>(HttpStatus.OK)));  // Retorna resposta após deleção reativa
     }
 
     @PutMapping("/policy/{id}")
-    Policy updatePolicy(@PathVariable long id, @Validated @RequestBody PolicyRequest newObj) {
+    public Mono<Policy> updatePolicy(@PathVariable long id, @Validated @RequestBody PolicyRequest newObj) {
         return priceFrontage.updatePolicy(id, newObj.convertModel());
     }
-
-    
 }
+

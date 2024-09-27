@@ -9,71 +9,60 @@ import com.topicos.price.models.Price;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/price")
 public class PriceController {
+
     @Autowired
     private PriceFrontage pricefrontage;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private WebClient.Builder webClientBuilder;
 
     @Value("${app.catalog-service.host}")
     private String catalogUrl;
 
     @PostMapping("/price")
-    Price savePrice(@Validated @RequestBody PriceRequest newObj) {
+    public Mono<Price> savePrice(@Validated @RequestBody PriceRequest newObj) {
         String urlProduct = catalogUrl + "/product/" + newObj.getProductId();
 
-        try {
-            ProductDTO product = restTemplate.getForObject(urlProduct, ProductDTO.class);
-
-            if (product == null) {
-                throw new ObjectNotFoundException("Product with id " + newObj.getProductId() + " not found");
-            }
-
-            return pricefrontage.savePrice(newObj.convertModel());
-
-        } catch (HttpClientErrorException e) {
-            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new ObjectNotFoundException("Product with id " + newObj.getProductId() + " not found");
-            } else {
-                throw e;
-            }
-        }
+        // Usando WebClient para chamadas reativas a outro serviço
+        return webClientBuilder.build()
+            .get()
+            .uri(urlProduct)
+            .retrieve()
+            .bodyToMono(ProductDTO.class)
+            .switchIfEmpty(Mono.error(new ObjectNotFoundException("Product with id " + newObj.getProductId() + " not found")))
+            .flatMap(product -> pricefrontage.savePrice(newObj.convertModel()));
     }
 
     @GetMapping("/price")
-    List<PriceResponse> listPrices() {
-        List<PriceResponse> response = new ArrayList<>();
-
-        for (Price p : pricefrontage.listPrices()) {
-            response.add(new PriceResponse(p));
-        }
-
-        return response;
+    public Flux<PriceResponse> listPrices() {
+        return pricefrontage.listPrices()
+            .map(PriceResponse::new);  // Converte Price em PriceResponse de forma reativa
     }
 
     @GetMapping("/price/{id}")
-    PriceResponse listPrice(@PathVariable long id) {
-        return new PriceResponse(pricefrontage.findPrice(id));
+    public Mono<PriceResponse> listPrice(@PathVariable long id) {
+        return pricefrontage.findPrice(id)
+            .map(PriceResponse::new);  // Converte Price em PriceResponse de forma reativa
     }
 
     @DeleteMapping("/price/{id}")
-    void deletePrice(@PathVariable long id) {
-        pricefrontage.deletePrice(id);
+    public Mono<ResponseEntity<Void>> deletePrice(@PathVariable long id) {
+        return pricefrontage.deletePrice(id)
+            .then(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
     }
 
     @PutMapping("/price/{id}")
-    Price updatePrice(@PathVariable long id, @Validated @RequestBody PriceRequest newObj) {
+    public Mono<Price> updatePrice(@PathVariable long id, @Validated @RequestBody PriceRequest newObj) {
         return pricefrontage.updatePrice(id, newObj.convertModel());
     }
 }

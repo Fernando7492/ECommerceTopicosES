@@ -1,7 +1,7 @@
 package com.topicos.price.frontage;
 
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,54 +13,62 @@ import com.topicos.price.models.Price;
 
 @Service
 public class PriceFrontage {
+
     @Autowired
     private InterfaceCreatePolicy interfaceCreatePolicy;
     @Autowired
     private InterfaceCreatePrice interfaceCreatePrice;
 
-    public Policy savePolicy(Policy entity) {
-        return interfaceCreatePolicy.savePolicy(entity);
+    // Métodos para Policy
+
+    public Mono<Policy> savePolicy(Policy entity) {
+        return interfaceCreatePolicy.savePolicy(entity);  // Retorna Mono<Policy>
     }
 
-    public Policy updatePolicy(Long id, Policy entity) {
-        return interfaceCreatePolicy.updatePolicy(id, entity);
+    public Mono<Policy> updatePolicy(Long id, Policy entity) {
+        return interfaceCreatePolicy.updatePolicy(id, entity);  // Retorna Mono<Policy>
     }
 
-    public Optional<Policy> findPolicy(Long id) {
-        return interfaceCreatePolicy.findPolicy(id);
+    public Mono<Policy> findPolicy(Long id) {
+        return interfaceCreatePolicy.findPolicy(id);  // Retorna Mono<Policy>
     }
 
-    public void deletePolicy(Long id) {
-        interfaceCreatePolicy.deletePolicy(id);
+    public Mono<Void> deletePolicy(Long id) {
+        return interfaceCreatePolicy.deletePolicy(id);  // Retorna Mono<Void> para operações de deleção
     }
 
-
-    public void deletePolicy(Policy entity) {
-        interfaceCreatePolicy.deletePolicy(entity);
+    public Mono<Void> deletePolicy(Policy entity) {
+        return interfaceCreatePolicy.deletePolicy(entity);  // Retorna Mono<Void>
     }
 
-    public List<Policy> listPolicies() {
-        return interfaceCreatePolicy.listPolicies();
+    public Flux<Policy> listPolicies() {
+        return interfaceCreatePolicy.listPolicies();  // Retorna Flux<Policy> para listas
     }
 
-    public Price savePrice(Price entity) {
-        return interfaceCreatePrice.savePrice(entity);
+    // Métodos para Price
+
+    public Mono<Price> savePrice(Price entity) {
+        return interfaceCreatePrice.savePrice(entity);  // Retorna Mono<Price>
     }
 
-    public Price updatePrice(Long id, Price entity){
-        return interfaceCreatePrice.updatePrice(id, entity);
+    public Mono<Price> updatePrice(Long id, Price entity) {
+        return interfaceCreatePrice.updatePrice(id, entity);  // Retorna Mono<Price>
     }
-    public Price findPrice(Long id){
-        return interfaceCreatePrice.findPrice(id);
+
+    public Mono<Price> findPrice(Long id) {
+        return interfaceCreatePrice.findPrice(id);  // Retorna Mono<Price>
     }
-    public void deletePrice(Long id){
-        interfaceCreatePrice.deletePrice(id);
+
+    public Mono<Void> deletePrice(Long id) {
+        return interfaceCreatePrice.deletePrice(id);  // Retorna Mono<Void>
     }
-    public void deletePrice(Price entity){
-        interfaceCreatePrice.deletePrice(entity);
+
+    public Mono<Void> deletePrice(Price entity) {
+        return interfaceCreatePrice.deletePrice(entity);  // Retorna Mono<Void>
     }
-    public List<Price> listPrices(){
-        return interfaceCreatePrice.listPrices();
+
+    public Flux<Price> listPrices() {
+        return interfaceCreatePrice.listPrices();  // Retorna Flux<Price>
     }
 
 }

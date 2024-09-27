@@ -2,25 +2,23 @@ package com.topicos.catalog.create.interfaces;
 
 import com.topicos.catalog.models.Product;
 
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface InterfaceCreateProduct {
 
-    List<Product> listProducts(String description);
+    Flux<Product> listProducts(String description);
 
-    List<Product> listProductsByCategory(String name);
+    Mono<Product> saveProduct(Product entity);
 
-    Product saveProduct(Product entity);
+    Flux<Product> listProducts();
 
-    List<Product> listProducts();
-
-    Optional<Product> findByProductId(Long id);
+    Mono<Product> findByProductId(Long id);
 
     void deleteProduct(Long id);
 
     void deleteProduct(Product entity);
 
-    Product updateProduct(Long id, Product entity);
+    Mono<Product> updateProduct(Long id, Product entity);
 
 }

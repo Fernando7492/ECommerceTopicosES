@@ -1,22 +1,23 @@
 package com.topicos.catalog.repositories;
 
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.topicos.catalog.models.Category;
-import java.util.List;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
-public interface RepositoryCategory extends JpaRepository<Category,Long>{
-    Category findByNameIgnoreCase(String name);
+public interface RepositoryCategory extends ReactiveCrudRepository<Category, Long> {
+    
+    Mono<Category> findByNameIgnoreCase(String name);
 
-    List<Category> findByDescriptionContainingIgnoreCase(String description);
+    Flux<Category> findByDescriptionContainingIgnoreCase(String description);
 
-    List<Category> findByParentIsNull();
+    Flux<Category> findByParentIdIsNull();
 
-    List<Category> findByParent(Category parentCategory);
-
-    List<Category> findByParent_Id(Long parentId);
+    Flux<Category> findByParentId(Long parentId);
 
 }

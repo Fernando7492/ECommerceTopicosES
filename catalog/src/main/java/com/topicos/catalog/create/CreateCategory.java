@@ -1,33 +1,33 @@
 package com.topicos.catalog.create;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.topicos.catalog.create.exception.DuplicatedRegisterException;
 import com.topicos.catalog.create.exception.ObjectNotFoundException;
 import com.topicos.catalog.create.interfaces.InterfaceCreateCategory;
 import com.topicos.catalog.models.Category;
 import com.topicos.catalog.repositories.RepositoryCategory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 
 @Service
 public class CreateCategory implements InterfaceCreateCategory {
 
     @Autowired
-    private RepositoryCategory repositoryCategory ;
+    private RepositoryCategory repositoryCategory;
 
     @Override
-    public Category saveCategory(Category entity) {
-        if(repositoryCategory.findByNameIgnoreCase(entity.getName()) == null) {
-            return repositoryCategory.save(entity);
-        } else {
-            throw new DuplicatedRegisterException("A categoria ["+ entity.getName() + "] já se encontra cadastrada no sistema.");
-        }
+    public Mono<Category> saveCategory(Category entity) {
+        return repositoryCategory.findByNameIgnoreCase(entity.getName())
+            .flatMap(existingCategory -> Mono.<Category>error(new DuplicatedRegisterException("A categoria [" + entity.getName() + "] já se encontra cadastrada no sistema.")))
+            .switchIfEmpty(repositoryCategory.save(entity));
     }
 
     @Override
-    public List<Category> listCategories() {
+    public Flux<Category> listCategories() {
         return repositoryCategory.findAll();
     }
 
@@ -42,28 +42,27 @@ public class CreateCategory implements InterfaceCreateCategory {
     }
 
     @Override
-    public Optional<Category> findCategory(Long id) {
+    public Mono<Category> findCategory(Long id) {
         if (id == null) {
             throw new ObjectNotFoundException("O id não pode ser nulo");
             
         }
         
-        Optional<Category> optional = repositoryCategory.findById(id);
-        if(optional.isPresent()) {
-            return optional;
-        } else {
-            throw new ObjectNotFoundException("Não existe categoria com o id: " + id);
-        }
+        Mono<Category> optional = repositoryCategory.findById(id);
+        return optional.switchIfEmpty(Mono.error(new ObjectNotFoundException("Não existe categoria com o id: " + id)));
     }
 
     @Override
-    public Category updateCategory(Long id, Category entity) {
-        Category category = repositoryCategory.findById(id).orElse(null);
-        category.setName(entity.getName());
-        category.setDescription(entity.getDescription());
-        category.setParent(entity.getParent());
-        category.setIcon(entity.getIcon());
-        return repositoryCategory.save(category);
+    public Mono<Category> updateCategory(Long id, Category entity) {
+        return repositoryCategory.findById(id)
+            .flatMap(category -> {
+                category.setName(entity.getName());
+                category.setDescription(entity.getDescription());
+                category.setParentId(entity.getParentId());
+                category.setIcon(entity.getIcon());
+                return repositoryCategory.save(category);
+            })
+            .switchIfEmpty(Mono.error(new ObjectNotFoundException("Não existe categoria com o id: " + id)));
     }
 
 }

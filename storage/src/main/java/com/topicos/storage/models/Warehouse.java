@@ -1,21 +1,17 @@
 package com.topicos.storage.models;
 
-import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
 @Data
+@Table("warehouse")
 public class Warehouse {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private String description;
     private String code;
 
-    @OneToOne
-    @Cascade(CascadeType.ALL)
-    private Address address;
+    private Long addressId;
 }

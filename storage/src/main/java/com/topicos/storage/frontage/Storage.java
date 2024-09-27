@@ -6,9 +6,9 @@ import com.topicos.storage.models.Stock;
 import com.topicos.storage.models.Warehouse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class Storage {
@@ -21,49 +21,45 @@ public class Storage {
 
     // ========================== STOCK ========================== //
 
-    public Stock saveStock(Stock entity) {
+    public Mono<Object> saveStock(Stock entity) {
         return interfaceCreateStock.saveStock(entity);
     }
 
-    public List<Stock> listStocks() {
+    public Flux<Stock> listStocks() {
         return interfaceCreateStock.listStocks();
     }
 
-    public List<Stock> listStocksByWarehouse(String name) {
-        return interfaceCreateStock.listStocksByWarehouse(name);
-    }
-
-    public Optional<Stock> findStock(Long id) {
+    public Mono<Stock> findStock(Long id) {
         return interfaceCreateStock.findByStockId(id);
     }
 
-    public Stock updateStock(Long id, Stock entity) {
+    public Mono<Stock> updateStock(Long id, Stock entity) {
         return interfaceCreateStock.updateStock(id, entity);
     }
 
-    public void deleteStock(Long id) {
-        interfaceCreateStock.deleteStock(id);
+    public Mono<Void> deleteStock(Long id) {
+        return interfaceCreateStock.deleteStock(id);
     }
 
     // ========================== WAREHOUSE ========================== //
 
-    public Warehouse saveWarehouse(Warehouse entity) {
+    public Mono<Object> saveWarehouse(Warehouse entity) {
         return interfaceCreateWarehouse.saveWarehouse(entity);
     }
 
-    public List<Warehouse> listWarehouses() {
+    public Flux<Warehouse> listWarehouses() {
         return interfaceCreateWarehouse.listWarehouses();
     }
 
-    public Optional<Warehouse> findWarehouse(Long id) {
+    public Mono<Warehouse> findWarehouse(Long id) {
         return interfaceCreateWarehouse.findByWarehouseId(id);
     }
 
-    public Warehouse updateWarehouse(Long id, Warehouse entity) {
+    public Mono<Warehouse> updateWarehouse(Long id, Warehouse entity) {
         return interfaceCreateWarehouse.updateWarehouse(id, entity);
     }
 
-    public void deleteWarehouse(Long id) {
-        interfaceCreateWarehouse.deleteWarehouse(id);
+    public Mono<Void> deleteWarehouse(Long id) {
+        return interfaceCreateWarehouse.deleteWarehouse(id);
     }
 }

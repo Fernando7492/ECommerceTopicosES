@@ -5,11 +5,11 @@ import com.topicos.storage.create.exception.RecordNotFoundException;
 import com.topicos.storage.create.interfaces.InterfaceCreateStock;
 import com.topicos.storage.models.Stock;
 import com.topicos.storage.repository.StockRepository;
+import com.topicos.storage.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class CreateStock implements InterfaceCreateStock {
@@ -17,58 +17,64 @@ public class CreateStock implements InterfaceCreateStock {
     @Autowired
     private StockRepository stockRepository;
 
+    @Autowired
+    private WarehouseRepository warehouseRepository;
+
     @Override
-    public Stock saveStock(Stock entity) {
+    public Mono<Object> saveStock(Stock entity) {
         String code = entity.getCode();
 
-        if (stockRepository.findByCodeIgnoreCase(code) == null) {
-            return stockRepository.save(entity);
-        } else {
-            throw new DuplicateRecordException("Stock with code " + code + " already exists");
-        }
+        return stockRepository.findByCodeIgnoreCase(code)
+                .flatMap(existingStock -> Mono.error(new DuplicateRecordException("Stock with code " + code + " already exists")))
+                .switchIfEmpty(stockRepository.save(entity))
+                .onErrorResume(Mono::error);
     }
 
     @Override
-    public List<Stock> listStocksByWarehouse(String name) {
-        return stockRepository.findByWarehouse_nameIgnoreCase(name);
+    public Flux<Stock> listStocks() {
+        return stockRepository.findAll()
+                .onErrorResume(Flux::error);
     }
 
     @Override
-    public List<Stock> listStocks() {
-        return stockRepository.findAll();
+    public Mono<Stock> findByStockId(Long id) {
+        return stockRepository.findById(id)
+                .switchIfEmpty(Mono.error(new RecordNotFoundException("Stock with id " + id + " not found")))
+                .onErrorResume(Mono::error);
     }
 
     @Override
-    public Optional<Stock> findByStockId(Long id) {
-        Optional<Stock> stock = stockRepository.findById(id);
-
-        if (stock.isPresent()) {
-            return stock;
-        } else {
-            throw new RecordNotFoundException("Stock with id " + id + " not found");
-        }
+    public Mono<Void> deleteStock(Long id) {
+        return stockRepository.findById(id)
+                .flatMap(stock -> stockRepository.deleteById(id))
+                .switchIfEmpty(Mono.error(new RecordNotFoundException("Stock with id " + id + " not found")))
+                .onErrorResume(Mono::error);
     }
 
     @Override
-    public void deleteStock(Long id) {
-        Optional<Stock> stock = stockRepository.findById(id);
-
-        if (stock.isPresent()) {
-            stockRepository.deleteById(id);
-        } else {
-            throw new RecordNotFoundException("Stock with id " + id + " not found");
-        }
+    public Mono<Stock> updateStock(Long id, Stock entity) {
+        return stockRepository.findById(id)
+                .switchIfEmpty(Mono.error(new RecordNotFoundException("Stock not found")))
+                .flatMap(existingStock -> {
+                    existingStock.setCode(entity.getCode());
+                    existingStock.setQuantity(entity.getQuantity());
+                    existingStock.setProductId(entity.getProductId());
+                    existingStock.setWarehouseId(entity.getWarehouseId());
+                    return stockRepository.save(existingStock);
+                })
+                .onErrorResume(Mono::error);
     }
 
-    @Override
-    public Stock updateStock(Long id, Stock entity) {
-        Stock stock = stockRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Stock not found"));
-
-        stock.setCode(entity.getCode());
-        stock.setQuantity(entity.getQuantity());
-        stock.setProductId(entity.getProductId());
-        stock.setWarehouse(entity.getWarehouse());
-
-        return stockRepository.save(stock);
+    public Flux<Stock> createStocksForNewProduct(Long productId) {
+        System.out.println("Creating stock for product: " + productId);
+        return warehouseRepository.findAll()
+                .flatMap(warehouse -> {
+                    Stock stock = new Stock();
+                    stock.setQuantity(0);
+                    stock.setCode(warehouse.getCode() + "-" + productId);
+                    stock.setProductId(productId);
+                    stock.setWarehouseId(warehouse.getId());
+                    return stockRepository.save(stock);
+                });
     }
 }

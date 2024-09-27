@@ -1,20 +1,20 @@
 package com.topicos.storage.create.interfaces;
 
 import com.topicos.storage.models.Stock;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface InterfaceCreateStock {
-    Stock saveStock(Stock entity);
+    Mono<Object> saveStock(Stock entity);
 
-    List<Stock> listStocks();
+    Flux<Stock> listStocks();
 
-    List<Stock> listStocksByWarehouse(String name);
+    Mono<Stock> findByStockId(Long id);
 
-    Optional<Stock> findByStockId(Long id);
+    Mono<Stock> updateStock(Long id, Stock entity);
 
-    Stock updateStock(Long id, Stock entity);
-
-    void deleteStock(Long id);
+    Mono<Void> deleteStock(Long id);
 }
